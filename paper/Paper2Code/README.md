@@ -1,4 +1,6 @@
-# DeepSeek-V4.1-Flash — Reference Implementation
+**not o3-mini, deepseek-v4-pro is the model working here. for reference: [going-doer/Paper2Code(4.8k)](https://github.com/going-doer/paper2code).**
+
+# Paper2Code → DeepSeek-V4.1-Flash
 
 A faithful PyTorch reference implementation of the architectural contributions
 described in **"DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression"**
