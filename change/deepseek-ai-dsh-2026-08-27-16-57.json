@@ -1,0 +1,6 @@
+{
+  "type": "minor",
+  "comment": "feat(dsh-cli): backport feedback and file refinements to 0.1.5",
+  "packageName": "@deepseek-ai/dsh",
+  "email": "agents@deepseek-ai.dev"
+}
