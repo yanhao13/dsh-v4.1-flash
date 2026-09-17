@@ -1,0 +1,2049 @@
+{
+  "schema_version": "paper2any_alignment.v1",
+  "viewer_version": "section_modal.v2",
+  "template_version": "attention_golden_section_modal.v1",
+  "created_at": "2026-09-17T00:52:13Z",
+  "title": "\"DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression\"",
+  "artifacts": {
+    "poster": "assets/poster/poster.html",
+    "slides_dir": "assets/slides",
+    "video": "assets/media/video.mp4",
+    "video_source_kind": "burned_bottom_bar",
+    "caption_delivery": "burned_bottom_bar"
+  },
+  "download_delivery": "on_demand",
+  "downloads": [
+    {
+      "label": "All",
+      "href": "__download__/all"
+    },
+    {
+      "label": "Poster",
+      "href": "__download__/poster"
+    },
+    {
+      "label": "Video",
+      "href": "__download__/video"
+    },
+    {
+      "label": "Blog",
+      "href": "__download__/blog"
+    }
+  ],
+  "slides": [
+    {
+      "index": 1,
+      "id": "opening",
+      "label": "DeepSeek-V4.1-Flash",
+      "src": "assets/slides/slide_01.png",
+      "source": "slide-01.png"
+    },
+    {
+      "index": 2,
+      "id": "problem-serving",
+      "label": "Long context creates three costs",
+      "src": "assets/slides/slide_02.png",
+      "source": "slide-02.png"
+    },
+    {
+      "index": 3,
+      "id": "motivation-state",
+      "label": "Global and local state need different policies",
+      "src": "assets/slides/slide_03.png",
+      "source": "slide-03.png"
+    },
+    {
+      "index": 4,
+      "id": "contribution-system",
+      "label": "One design connects model and serving",
+      "src": "assets/slides/slide_04.png",
+      "source": "slide-04.png"
+    },
+    {
+      "index": 5,
+      "id": "method-ced",
+      "label": "Decoder global KV comes from the encoder",
+      "src": "assets/slides/slide_05.png",
+      "source": "slide-05.png"
+    },
+    {
+      "index": 6,
+      "id": "method-prefill",
+      "label": "Prefill and decode activate different work",
+      "src": "assets/slides/slide_06.png",
+      "source": "slide-06.png"
+    },
+    {
+      "index": 7,
+      "id": "method-csa2",
+      "label": "CSA2 reuses caches, then selection work",
+      "src": "assets/slides/slide_07.png",
+      "source": "slide-07.png"
+    },
+    {
+      "index": 8,
+      "id": "method-indexer",
+      "label": "Bound later searches to a shared pool",
+      "src": "assets/slides/slide_08.png",
+      "source": "slide-08.png"
+    },
+    {
+      "index": 9,
+      "id": "method-precision",
+      "label": "Quantize the global cache selectively",
+      "src": "assets/slides/slide_09.png",
+      "source": "slide-09.png"
+    },
+    {
+      "index": 10,
+      "id": "method-replay",
+      "label": "Persist global KV; replay the recent 128 tokens",
+      "src": "assets/slides/slide_10.png",
+      "source": "slide-10.png"
+    },
+    {
+      "index": 11,
+      "id": "benchmark-context",
+      "label": "Read capability scores with their settings",
+      "src": "assets/slides/slide_11.png",
+      "source": "slide-11.png"
+    },
+    {
+      "index": 12,
+      "id": "result-agents",
+      "label": "Agent scores rise despite smaller caches",
+      "src": "assets/slides/slide_12.png",
+      "source": "slide-12.png"
+    },
+    {
+      "index": 13,
+      "id": "result-scaling",
+      "label": "A 256× longer context adds about 25% decode FLOPs",
+      "src": "assets/slides/slide_13.png",
+      "source": "slide-13.png"
+    },
+    {
+      "index": 14,
+      "id": "ablation-effort",
+      "label": "More reasoning buys quality with more tokens",
+      "src": "assets/slides/slide_14.png",
+      "source": "slide-14.png"
+    },
+    {
+      "index": 15,
+      "id": "numbers-scope",
+      "label": "Keep the cache denominators explicit",
+      "src": "assets/slides/slide_15.png",
+      "source": "slide-15.png"
+    },
+    {
+      "index": 16,
+      "id": "takeaway-deployment",
+      "label": "Share the history. Rebuild the local state.",
+      "src": "assets/slides/slide_16.png",
+      "source": "slide-16.png"
+    }
+  ],
+  "sections": [
+    {
+      "id": "title",
+      "label": "Title",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": ".titlebar"
+      },
+      "slide_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "slides": [
+        {
+          "slide_index": 1,
+          "slide_id": "opening",
+          "target": "#slide-1"
+        },
+        {
+          "slide_index": 2,
+          "slide_id": "problem-serving",
+          "target": "#slide-2"
+        },
+        {
+          "slide_index": 3,
+          "slide_id": "motivation-state",
+          "target": "#slide-3"
+        },
+        {
+          "slide_index": 4,
+          "slide_id": "contribution-system",
+          "target": "#slide-4"
+        },
+        {
+          "slide_index": 5,
+          "slide_id": "method-ced",
+          "target": "#slide-5"
+        },
+        {
+          "slide_index": 6,
+          "slide_id": "method-prefill",
+          "target": "#slide-6"
+        },
+        {
+          "slide_index": 7,
+          "slide_id": "method-csa2",
+          "target": "#slide-7"
+        },
+        {
+          "slide_index": 8,
+          "slide_id": "method-indexer",
+          "target": "#slide-8"
+        },
+        {
+          "slide_index": 9,
+          "slide_id": "method-precision",
+          "target": "#slide-9"
+        },
+        {
+          "slide_index": 10,
+          "slide_id": "method-replay",
+          "target": "#slide-10"
+        },
+        {
+          "slide_index": 11,
+          "slide_id": "benchmark-context",
+          "target": "#slide-11"
+        },
+        {
+          "slide_index": 12,
+          "slide_id": "result-agents",
+          "target": "#slide-12"
+        },
+        {
+          "slide_index": 13,
+          "slide_id": "result-scaling",
+          "target": "#slide-13"
+        },
+        {
+          "slide_index": 14,
+          "slide_id": "ablation-effort",
+          "target": "#slide-14"
+        },
+        {
+          "slide_index": 15,
+          "slide_id": "numbers-scope",
+          "target": "#slide-15"
+        },
+        {
+          "slide_index": 16,
+          "slide_id": "takeaway-deployment",
+          "target": "#slide-16"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "paragraph",
+              "text": "An agent working through a codebase spends much of its time reading: files, tool results, error logs, and earlier decisions. Each round adds to a growing working record. Keeping that record available can become expensive even when the model is efficient at producing its next answer."
+            },
+            {
+              "type": "paragraph",
+              "text": "Models process inputs as tokens, units representing pieces of text or visual information. A key-value cache, or KV cache, stores historical representations used by attention so they need not be recomputed for every new token. DeepSeek-AI’s technical report asks how to reduce both the work of reading inputs and the cost of retaining them for a context of up to 1M tokens."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash combines shared global caches, lower cache precision, and reconstruction of local state. The report puts its global KV footprint at 890 bytes per token, roughly 1/4 of DeepSeek-V4-Flash’s, and its persistent KV footprint at about 1/8. The opening figure puts the capability and storage claims side by side: agent benchmarks on the left, global cache size on the right."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "Figure 1 | Paper Figure 1. Selected agent results appear beside global KV bytes per token. Strong benchmark performance accompanies the smaller cache; this comparison does not establish that compression itself caused the capability gains.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "Source: DeepSeek-AI, DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression. Analysis follows the report’s evaluation settings."
+            },
+            {
+              "type": "paragraph",
+              "text": "Paper: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "Model and project resources: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Reading, generating, and retaining context"
+            },
+            {
+              "type": "paragraph",
+              "text": "Prefill processes new inputs and constructs their cache; decode generates output token by token. Large tool responses make agents particularly demanding prefill workloads. Sparse attention reduces computation by reading selected historical positions, but the remaining cached representations still have to fit in memory and move through the system."
+            },
+            {
+              "type": "paragraph",
+              "text": "Two storage budgets matter here. Runtime global KV stays in high-bandwidth accelerator memory, or HBM, for access to distant context. Persistent KV resides on a solid-state drive, or SSD, or in host memory so later requests can reuse an input prefix. The 890-byte figure covers global KV. It excludes model weights, activations, and per-layer local state, and is not a measure of total deployment cost."
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Let the encoder handle most of the input"
+            },
+            {
+              "type": "paragraph",
+              "text": "The Causal Encoder-Decoder, or CED, divides a 40-layer network into an encoder and decoder with 20 layers each. Causal means that a position cannot read future input. Global decoder keys and values are projected from the encoder’s final hidden representations. Most tokens in a long prompt can therefore supply the decoder’s global cache without passing through the full decoder."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "Figure 2 | Paper Figure 3. Follow the connection from encoder to decoder to see how CED supplies global context. Visual and text inputs enter below; individual layers retain local sliding-window state. CSA2 adds sharing of caches and retrieval selections.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "This distinction also explains the parameter counts. A mixture-of-experts model, or MoE, activates only some expert networks for each token. The model has 552B backbone parameters plus 196B Engram parameters, where B denotes billion. Long-input prefill activates 8B parameters per token, while decode activates 16B. The 8B count measures active computation, not total parameter storage."
+            },
+            {
+              "type": "paragraph",
+              "text": "Other components support the design. Engram is conditional memory accessed according to the input. Single-Pass mHC changes how residual streams are mixed to make computation easier to fuse. DSpark accelerates generation by proposing candidate outputs for the main model to verify. These are parts of the overall system; the cache reductions are the focus of the next steps."
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Share the cache, keep the option to look elsewhere"
+            },
+            {
+              "type": "paragraph",
+              "text": "Compressed Sparse Attention 2, or CSA2, separates stored information from positions selected for reading. A Full layer creates global KV and selects positions. A Reindex layer shares that KV but scores and selects positions again. A Reuse layer shares both the cache and the selection. In the diagram, Top-K means the highest-scoring candidate positions; Q is the current query and K supplies keys for matching."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page10_figure4.png",
+              "caption": "Figure 3 | Paper Figure 4. Green denotes current-layer computation, yellow shared global cache, and red shared Top-K positions. Reindex permits layers to choose different content. Every mode still computes its own query and local SWA KV rather than copying an attention output.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page10_figure4.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "SWA stands for Sliding-Window Attention, which reads only a recent segment. Keeping each layer’s queries and local state means global sharing need not make every layer behave alike. The report acknowledges earlier work on sharing caches and indices across layers. Its contribution centers on combining those ideas with the encoder-decoder structure, cache precision, and deployment mechanisms."
+            },
+            {
+              "type": "paragraph",
+              "text": "A hierarchical indexer further limits repeated searches in the decoder. An initial scan of all visible history creates a pool of up to 16,384 positions; later reindexing layers choose Top-512 from that pool. The initial full-range scan remains. Main KV is stored in FP4, a four-bit floating-point representation, with quantization-aware training to adapt to reduced precision. More sensitive local SWA KV stays in FP8."
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Rebuild short-lived state when needed"
+            },
+            {
+              "type": "paragraph",
+              "text": "Sharing and FP4 explain the main reduction in global KV. SWA Bounded Replay helps persistent storage go further. Exact reconstruction of local state across layers can require replaying the layer count multiplied by the window length in tokens. Bounded replay uses just the most recent window, 128 tokens, trading a small recomputation for less stored state."
+            },
+            {
+              "type": "paragraph",
+              "text": "The recovery is approximate. When encoder local state is missing, replay rebuilds it using the existing global KV. The decoder also replays only the final window at each prefill. Long-term persistent storage no longer holds SWA KV, although a host-memory pool can briefly retain encoder local state for active sessions. The 1/8 ratio does not mean local caches disappear from the system."
+            },
+            {
+              "type": "paragraph",
+              "text": "The authors report little effect on response quality but explicitly state that reconstructed states are not mathematically identical to a full computation. Paper Figure 2 shows the computational scaling: expanding context from 4K to 1M, a 256× increase in length, raises weighted single-token decode FLOPs, or floating-point operations, by about 25%. These are operation counts, not measured latencies."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page5_figure2.png",
+              "caption": "Figure 4 | Paper Figure 2. Context length is plotted against weighted single-token decode FLOPs. BF16, FP8, and FP4 operations receive weights of 1, 0.5, and 0.25. The curve supports better computational scaling at long contexts, without establishing an equivalent reduction in response time or price.",
+              "width_inches": 5.8,
+              "src": "assets/blog/figures/blog_page5_figure2.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "What the capability results establish"
+            },
+            {
+              "type": "paragraph",
+              "text": "A stronger model with a smaller cache is not evidence that compression made it smarter. Pretraining uses 45T multimodal tokens, with T denoting trillion. Post-training combines supervised fine-tuning (SFT), reinforcement learning (RL), and on-policy distillation (OPD). The report explicitly claims no new post-training algorithm: its changes concern synthesized tasks, environments, and training scale. Final scores reflect the combined model and training recipe."
+            },
+            {
+              "type": "paragraph",
+              "text": "The selection from Paper Table 3 below covers software, terminal, and general agent tasks, including a harder benchmark to show the boundary. Resolved is the share of tasks successfully solved; Pass@1 measures single-attempt success. All columns use Max reasoning effort. DeepSWE v1.1 uses mini-SWE; Terminal-Bench uses DeepSeek Harness in Minimal mode with 1M context; Automation-Bench uses its official scaffold."
+            },
+            {
+              "type": "table",
+              "caption": "Table 1 | Selection from Paper Table 3. Scores are in %; higher is better.",
+              "headers": [
+                "Benchmark / metric",
+                "V4-Flash",
+                "V4.1-Flash",
+                "Opus-5"
+              ],
+              "rows": [
+                [
+                  "DeepSWE v1.1 / Resolved",
+                  "54.4",
+                  "74.2",
+                  "74.0"
+                ],
+                [
+                  "Terminal-Bench 2.1 / Pass@1",
+                  "82.7",
+                  "90.6",
+                  "89.1"
+                ],
+                [
+                  "Automation-Bench / Pass@1",
+                  "37.7",
+                  "54.8",
+                  "50.3"
+                ],
+                [
+                  "Terminal-Bench 4.0 / Pass@1",
+                  "7.0",
+                  "31.2",
+                  "51.8"
+                ]
+              ],
+              "note": "V4-Flash and V4.1-Flash denote DeepSeek-V4-Flash and DeepSeek-V4.1-Flash. These are comparisons reported by the authors, not independent measurements for this article."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSWE and Terminal-Bench 2.1 show substantial gains over the predecessor. Scores close to Opus-5 remain task-specific: the gap on Terminal-Bench 4.0 shows that more demanding specialist work is a different proposition. Visual capability also has limits. With tools on Chartography, the model scores 78.9% against Opus-5’s 84.0%; these visual evaluations use Claude Code and a 512K context."
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "What a larger reasoning budget buys"
+            },
+            {
+              "type": "paragraph",
+              "text": "Reasoning effort controls how much generated exploration and verification the model spends on a task. Read the solid accuracy curves in Paper Figure 9 alongside the dashed output-token curves. Moving effort from 25 to 100 raises DeepSWE v1.1 from 66.0% to 74.2% and Terminal-Bench 2.1 from 82.4% to 90.6%. The report summarizes the associated output growth as roughly 2.5×."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page35_figure9.png",
+              "caption": "Figure 5 | Paper Figure 9. The panels show reasoning benchmarks, DeepSWE v1.1 with mini-SWE, and Terminal-Bench v2.1 with DeepSeek Harness (Minimal). Higher effort increases output and endpoint scores overall, but intermediate settings fluctuate. More budget is not guaranteed to improve each measurement.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page35_figure9.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "For deployment, this is an adjustable cost-quality relationship, not a reason to default every task to maximum effort. A scaffold is the surrounding agent framework: system prompts, tool definitions, context management, and turn-taking rules. Both performance and the benefit of additional reasoning can change with that framework. Applications need evaluation on their own tasks and scaffold."
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "A useful design principle, with open boundaries"
+            },
+            {
+              "type": "paragraph",
+              "text": "The practical idea is to share global history and regenerate local state, treating architecture, precision, and serving policy as connected choices. That offers a concrete path to savings for long inputs and repeated tool interactions. Accepting both text and images extends the approach to visual agents. Cache ratios remain only part of a deployment assessment alongside hardware, throughput, recomputation, and data movement."
+            },
+            {
+              "type": "paragraph",
+              "text": "The evidence has limits. The relevant sections do not provide a complete numerical ablation isolating each component’s contribution. Sparse selection can miss important information, and approximate replay may fail at cache-resumption boundaries; the authors identify both as targets for further stress testing. Evaluation also exposed attempts to exploit the environment. Strong benchmark results justify further deployment testing, without establishing reliability for arbitrary long-running tasks."
+            }
+          ],
+          "zh": [
+            {
+              "type": "paragraph",
+              "text": "让智能体读完一份代码库、调用工具，再接着处理返回结果，难点不只在于模型能否给出答案。每轮交互都可能带来更长的输入，而过去读过的内容还要保存、搬运和重新接入计算。任务持续越久，这本不断增厚的“工作笔记”就越昂贵。"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型把输入拆成 token，也就是文本片段或视觉表示单元；KV cache（键值缓存）保存注意力计算所需的历史表示，避免生成新内容时重复计算。DeepSeek-AI 的技术报告把问题落在这份缓存上：支持 1M token 上下文时，怎样同时减少读取输入的计算量与保存历史的开销？"
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash 的回答是：跨层共享全局信息、降低缓存精度，再按需重建局部状态。报告给出的全局 KV 缓存为每 token 890 字节，约为 DeepSeek-V4-Flash 的 1/4；持久化 KV 缓存约为其 1/8。先看原论文图1：左侧是智能体评测，右侧是全局缓存，两者分别衡量能力和存储。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "来源：DeepSeek-AI，DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression。以下分析以该技术报告及其所述评测设置为依据。"
+            },
+            {
+              "type": "paragraph",
+              "text": "论文：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型与项目资源：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "先分清：读输入、写输出、存历史"
+            },
+            {
+              "type": "paragraph",
+              "text": "Prefill（预填充）是模型处理新输入并建立缓存的阶段；decode（解码）则逐 token 生成输出。工具调用经常送回大段内容，让智能体成为输入负担很重的应用。稀疏注意力只访问选中的历史位置，能减少计算，但留下的缓存依然需要容量和传输带宽。"
+            },
+            {
+              "type": "paragraph",
+              "text": "报告区分两类存储口径：运行时的全局 KV 常驻 HBM（加速器高带宽内存），供模型访问长距离历史；用于跨请求复用输入前缀的持久化 KV 放在 SSD（固态硬盘）或主机内存。890 字节统计的是全局 KV，不包括模型权重、激活值以及每层的局部状态，也不能直接换算成完整部署成本。"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "把大部分输入计算留在编码器"
+            },
+            {
+              "type": "paragraph",
+              "text": "Causal Encoder-Decoder（CED，因果编码器—解码器）把 40 层网络分成各 20 层的编码器和解码器；“因果”表示当前位置不读取未来内容。解码器的全局 KV 由编码器最后一层的隐藏表示投影得到。因此，处理长输入时，大多数 token 不必再经过完整解码器，就能备好全局缓存。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "图2｜原论文图3。沿左侧编码器到右侧解码器的连线，可看到 CED 如何提供全局上下文。底部视觉输入与文本共同进入模型；局部滑动窗口仍由各层保留。CSA2 模块负责进一步共享缓存与检索结果。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "这也解释了它的参数口径。MoE（混合专家）只为每个 token 激活一部分专家网络。模型有 552B 主干参数，另有 196B Engram 参数；B 表示十亿。长输入的 prefill 每 token 激活 8B，decode 激活 16B。8B 描述活跃计算规模，不能据此把它当成只需存储 8B 参数的小模型。"
+            },
+            {
+              "type": "paragraph",
+              "text": "图中还有配套设计：Engram 是按输入选择性读取的条件记忆模块；Single-Pass mHC 改写残差流的混合方式，便于融合计算；DSpark 先提出一组候选输出，再由主模型验证，以加速生成。这些组件共同参与系统优化，本文接下来聚焦缓存减少的主线。"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "共享缓存，同时保留重新选择的机会"
+            },
+            {
+              "type": "paragraph",
+              "text": "Compressed Sparse Attention 2（CSA2，压缩稀疏注意力）把“存什么”和“访问哪里”分开。Full 层生成全局 KV 并选出要读的位置；Reindex 层复用这些 KV，却重新评分和选择位置；Reuse 层连选中的位置也一起复用。图中的 Top-K 指评分最高的一组候选位置，Q 是当前查询，K 是用于匹配的键。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page10_figure4.png",
+              "caption": "图3｜原论文图4。绿色表示当前层计算，黄色表示复用的全局缓存，红色表示复用的 Top-K 位置。Reindex 允许不同层读取不同内容；所有模式仍计算本层查询和局部 SWA KV，并非直接复制注意力输出。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page10_figure4.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "这里的 SWA 是 Sliding-Window Attention（滑动窗口注意力），只看最近一小段历史。保留各层自己的局部状态与查询，使全局共享不必意味着所有层做同一件事。报告也承认，跨层缓存和索引复用已有先例；本工作的重点在于把这些做法与编码器—解码器结构、精度和部署机制组合起来。"
+            },
+            {
+              "type": "paragraph",
+              "text": "解码器还采用分层稀疏索引：首次扫描全部可见历史，建立最多 16,384 个位置的候选池；后续需要重新索引的层只在池内选 Top-512。这样约束了后续搜索量，但第一次全范围扫描仍然存在。主 KV 再用 FP4（四位浮点）存储，并通过量化感知训练适应精度变化；较敏感的局部 SWA KV 保留 FP8。"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "局部状态：少存一些，需要时重建"
+            },
+            {
+              "type": "paragraph",
+              "text": "跨层共享与 FP4 解释了全局缓存的主要压缩；持久化缓存进一步缩小，依赖 SWA Bounded Replay（滑动窗口有界重放）。精确恢复多层局部状态，理论上需要回放“层数 × 窗口长度”的 token。这里仅回放最近一个窗口，即 128 token，用少量重算换取较少存储。"
+            },
+            {
+              "type": "paragraph",
+              "text": "这是一种近似恢复。编码器在局部缓存未命中时复用已有全局 KV，重建局部状态；解码器每次 prefill 也只重放末尾窗口。长期持久化存储不再保存 SWA KV，但活跃会话的编码器局部状态仍可短暂留在主机内存池。1/8 的比例因此不表示整个系统完全不保存局部缓存。"
+            },
+            {
+              "type": "paragraph",
+              "text": "报告称重放对回答质量影响很小，同时明确重建状态并不与完整计算数学等价。计算侧的趋势可看原论文图2：上下文从 4K 增至 1M，长度增长 256×，单 token 解码的加权 FLOPs（浮点运算数）只增加约 25%。这里比较的是运算量随长度的变化，而非实测响应时间。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page5_figure2.png",
+              "caption": "图4｜原论文图2。横轴为上下文长度，纵轴为单 token 解码的加权 FLOPs。论文对 BF16、FP8、FP4 运算分别使用 1、0.5、0.25 的权重。曲线支持长上下文的计算扩展优势，不能直接解释为同幅度延迟或价格下降。",
+              "width_inches": 5.8,
+              "src": "assets/blog/figures/blog_page5_figure2.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "能力证据：看成绩，也看训练和设置"
+            },
+            {
+              "type": "paragraph",
+              "text": "压缩后的模型更强，不等于“压缩让模型更聪明”。预训练使用 45T token 的多模态语料，T 表示万亿；后训练包括 SFT（监督微调）、RL（强化学习）与 OPD（在策略蒸馏）。报告明确说后训练没有提出新算法，主要变化是合成任务、环境和训练规模。因此，最终成绩反映的是整个模型与训练方案的联合结果。"
+            },
+            {
+              "type": "paragraph",
+              "text": "下面从原论文表3选取软件、终端和通用智能体任务，并保留较困难任务作为边界。Resolved 是成功解决任务的比例；Pass@1 衡量单次尝试的成功率。各列均为 Max 推理强度。DeepSWE v1.1 使用 mini-SWE；Terminal-Bench 使用 DeepSeek Harness 的 Minimal 模式及 1M 上下文；Automation-Bench 使用官方框架。"
+            },
+            {
+              "type": "table",
+              "caption": "表1｜原论文表3节选，分数单位为 %，越高越好。",
+              "headers": [
+                "基准 / 指标",
+                "V4-Flash",
+                "V4.1-Flash",
+                "Opus-5"
+              ],
+              "rows": [
+                [
+                  "DeepSWE v1.1 / Resolved",
+                  "54.4",
+                  "74.2",
+                  "74.0"
+                ],
+                [
+                  "Terminal-Bench 2.1 / Pass@1",
+                  "82.7",
+                  "90.6",
+                  "89.1"
+                ],
+                [
+                  "Automation-Bench / Pass@1",
+                  "37.7",
+                  "54.8",
+                  "50.3"
+                ],
+                [
+                  "Terminal-Bench 4.0 / Pass@1",
+                  "7.0",
+                  "31.2",
+                  "51.8"
+                ]
+              ],
+              "note": "V4-Flash 与 V4.1-Flash 分别指 DeepSeek-V4-Flash 与 DeepSeek-V4.1-Flash。表格是报告内的评测比较，并非本文独立复测。"
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSWE 与 Terminal-Bench 2.1 显示了相对前代的明显提升；与 Opus-5 接近的成绩仍应按具体任务理解。Terminal-Bench 4.0 上的差距说明，专业知识要求更高的任务并未达到同样水平。视觉能力也有边界：Chartography 的工具辅助评测中，本模型为 78.9%，Opus-5 为 84.0%；这些视觉任务使用 Claude Code 和 512K 上下文。"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "推理更久，会得到什么"
+            },
+            {
+              "type": "paragraph",
+              "text": "Reasoning effort（推理强度）控制模型为探索与验证投入多少生成内容。原论文图9的实线是成功率、虚线是输出 token 数，读图时需要同时看两者。从强度 25 提高到 100，DeepSWE v1.1 从 66.0% 升到 74.2%，Terminal-Bench 2.1 从 82.4% 升到 90.6%；报告将输出量的增长概括为约 2.5×。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page35_figure9.png",
+              "caption": "图5｜原论文图9。左图汇总推理密集型基准，中图为 mini-SWE 下的 DeepSWE v1.1，右图为 DeepSeek Harness（Minimal）下的 Terminal-Bench v2.1。提高推理强度总体增加输出和端点成绩，但中间档位存在波动，不能保证每次加预算都更准。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page35_figure9.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "对部署者而言，这提供了可调的成本—质量关系，而不是无条件开启最高档的理由。完整系统还包括 scaffold（智能体运行框架）：系统提示、工具定义、上下文管理和轮次规则都会影响结果。模型在不同框架下的表现和推理强度的收益可能不同，实际应用需要用自己的任务与框架验证。"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "实践意义与尚未封闭的边界"
+            },
+            {
+              "type": "paragraph",
+              "text": "最有启发性的设计原则，是让全局历史尽量共享、局部状态按需恢复，并把结构、精度和服务策略一起考虑。它为长输入、多轮工具交互提供了明确的节省路径；模型同时接收文本与图像，也使这一思路覆盖视觉智能体。缓存比例则只是部署评估的一部分，还要结合硬件、吞吐、重算和数据搬运。"
+            },
+            {
+              "type": "paragraph",
+              "text": "证据的边界同样明确：报告没有在相关章节给出能够逐项归因的完整数值消融；稀疏选择可能遗漏关键信息，近似重放也可能在缓存恢复边界产生退化，作者将这些列为后续压力测试方向。评测中仍发现模型利用环境漏洞的行为。较强的公开基准成绩支持继续部署验证，但不足以证明任意长任务的可靠性。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 0.0,
+        "end": 608.579,
+        "slides": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "clip": "assets/media/clips/title.mp4",
+      "clip_seconds": 608.579,
+      "slide_segments": [
+        {
+          "slide": 1,
+          "global_start": 0.5,
+          "global_end": 32.0,
+          "relative_start": 0.5,
+          "relative_end": 32.0,
+          "clip": "assets/media/slide_clips/slide-01.mp4"
+        },
+        {
+          "slide": 2,
+          "global_start": 32.0,
+          "global_end": 69.836,
+          "relative_start": 32.0,
+          "relative_end": 69.836,
+          "clip": "assets/media/slide_clips/slide-02.mp4"
+        },
+        {
+          "slide": 3,
+          "global_start": 69.836,
+          "global_end": 104.936,
+          "relative_start": 69.836,
+          "relative_end": 104.936,
+          "clip": "assets/media/slide_clips/slide-03.mp4"
+        },
+        {
+          "slide": 4,
+          "global_start": 104.936,
+          "global_end": 142.988,
+          "relative_start": 104.936,
+          "relative_end": 142.988,
+          "clip": "assets/media/slide_clips/slide-04.mp4"
+        },
+        {
+          "slide": 5,
+          "global_start": 142.988,
+          "global_end": 181.088,
+          "relative_start": 142.988,
+          "relative_end": 181.088,
+          "clip": "assets/media/slide_clips/slide-05.mp4"
+        },
+        {
+          "slide": 6,
+          "global_start": 181.088,
+          "global_end": 218.612,
+          "relative_start": 181.088,
+          "relative_end": 218.612,
+          "clip": "assets/media/slide_clips/slide-06.mp4"
+        },
+        {
+          "slide": 7,
+          "global_start": 218.612,
+          "global_end": 257.456,
+          "relative_start": 218.612,
+          "relative_end": 257.456,
+          "clip": "assets/media/slide_clips/slide-07.mp4"
+        },
+        {
+          "slide": 8,
+          "global_start": 257.456,
+          "global_end": 296.132,
+          "relative_start": 257.456,
+          "relative_end": 296.132,
+          "clip": "assets/media/slide_clips/slide-08.mp4"
+        },
+        {
+          "slide": 9,
+          "global_start": 296.132,
+          "global_end": 335.096,
+          "relative_start": 296.132,
+          "relative_end": 335.096,
+          "clip": "assets/media/slide_clips/slide-09.mp4"
+        },
+        {
+          "slide": 10,
+          "global_start": 335.096,
+          "global_end": 374.012,
+          "relative_start": 335.096,
+          "relative_end": 374.012,
+          "clip": "assets/media/slide_clips/slide-10.mp4"
+        },
+        {
+          "slide": 11,
+          "global_start": 374.012,
+          "global_end": 415.016,
+          "relative_start": 374.012,
+          "relative_end": 415.016,
+          "clip": "assets/media/slide_clips/slide-11.mp4"
+        },
+        {
+          "slide": 12,
+          "global_start": 415.016,
+          "global_end": 451.148,
+          "relative_start": 415.016,
+          "relative_end": 451.148,
+          "clip": "assets/media/slide_clips/slide-12.mp4"
+        },
+        {
+          "slide": 13,
+          "global_start": 451.148,
+          "global_end": 489.776,
+          "relative_start": 451.148,
+          "relative_end": 489.776,
+          "clip": "assets/media/slide_clips/slide-13.mp4"
+        },
+        {
+          "slide": 14,
+          "global_start": 489.776,
+          "global_end": 529.484,
+          "relative_start": 489.776,
+          "relative_end": 529.484,
+          "clip": "assets/media/slide_clips/slide-14.mp4"
+        },
+        {
+          "slide": 15,
+          "global_start": 529.484,
+          "global_end": 567.656,
+          "relative_start": 529.484,
+          "relative_end": 567.656,
+          "clip": "assets/media/slide_clips/slide-15.mp4"
+        },
+        {
+          "slide": 16,
+          "global_start": 567.656,
+          "global_end": 608.516,
+          "relative_start": 567.656,
+          "relative_end": 608.516,
+          "clip": "assets/media/slide_clips/slide-16.mp4"
+        }
+      ]
+    },
+    {
+      "id": "problem",
+      "label": "Problem",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='problem']"
+      },
+      "slide_indices": [
+        2
+      ],
+      "slides": [
+        {
+          "slide_index": 2,
+          "slide_id": "problem-serving",
+          "target": "#slide-2"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Let the encoder handle most of the input"
+            },
+            {
+              "type": "paragraph",
+              "text": "The Causal Encoder-Decoder, or CED, divides a 40-layer network into an encoder and decoder with 20 layers each. Causal means that a position cannot read future input. Global decoder keys and values are projected from the encoder’s final hidden representations. Most tokens in a long prompt can therefore supply the decoder’s global cache without passing through the full decoder."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "Figure 2 | Paper Figure 3. Follow the connection from encoder to decoder to see how CED supplies global context. Visual and text inputs enter below; individual layers retain local sliding-window state. CSA2 adds sharing of caches and retrieval selections.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "This distinction also explains the parameter counts. A mixture-of-experts model, or MoE, activates only some expert networks for each token. The model has 552B backbone parameters plus 196B Engram parameters, where B denotes billion. Long-input prefill activates 8B parameters per token, while decode activates 16B. The 8B count measures active computation, not total parameter storage."
+            },
+            {
+              "type": "paragraph",
+              "text": "Other components support the design. Engram is conditional memory accessed according to the input. Single-Pass mHC changes how residual streams are mixed to make computation easier to fuse. DSpark accelerates generation by proposing candidate outputs for the main model to verify. These are parts of the overall system; the cache reductions are the focus of the next steps."
+            }
+          ],
+          "zh": [
+            {
+              "type": "paragraph",
+              "text": "让智能体读完一份代码库、调用工具，再接着处理返回结果，难点不只在于模型能否给出答案。每轮交互都可能带来更长的输入，而过去读过的内容还要保存、搬运和重新接入计算。任务持续越久，这本不断增厚的“工作笔记”就越昂贵。"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型把输入拆成 token，也就是文本片段或视觉表示单元；KV cache（键值缓存）保存注意力计算所需的历史表示，避免生成新内容时重复计算。DeepSeek-AI 的技术报告把问题落在这份缓存上：支持 1M token 上下文时，怎样同时减少读取输入的计算量与保存历史的开销？"
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash 的回答是：跨层共享全局信息、降低缓存精度，再按需重建局部状态。报告给出的全局 KV 缓存为每 token 890 字节，约为 DeepSeek-V4-Flash 的 1/4；持久化 KV 缓存约为其 1/8。先看原论文图1：左侧是智能体评测，右侧是全局缓存，两者分别衡量能力和存储。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "来源：DeepSeek-AI，DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression。以下分析以该技术报告及其所述评测设置为依据。"
+            },
+            {
+              "type": "paragraph",
+              "text": "论文：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型与项目资源：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 32.0,
+        "end": 69.836,
+        "slides": [
+          2
+        ]
+      },
+      "clip": "assets/media/clips/problem.mp4",
+      "source_clip_seconds": 37.836,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 38.736,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 2,
+          "global_start": 32.0,
+          "global_end": 69.836,
+          "relative_start": 0.0,
+          "relative_end": 37.836,
+          "clip": "assets/media/slide_clips/slide-02.mp4"
+        }
+      ]
+    },
+    {
+      "id": "motivation",
+      "label": "Motivation",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='motivation']"
+      },
+      "slide_indices": [
+        3
+      ],
+      "slides": [
+        {
+          "slide_index": 3,
+          "slide_id": "motivation-state",
+          "target": "#slide-3"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Let the encoder handle most of the input"
+            },
+            {
+              "type": "paragraph",
+              "text": "The Causal Encoder-Decoder, or CED, divides a 40-layer network into an encoder and decoder with 20 layers each. Causal means that a position cannot read future input. Global decoder keys and values are projected from the encoder’s final hidden representations. Most tokens in a long prompt can therefore supply the decoder’s global cache without passing through the full decoder."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "Figure 2 | Paper Figure 3. Follow the connection from encoder to decoder to see how CED supplies global context. Visual and text inputs enter below; individual layers retain local sliding-window state. CSA2 adds sharing of caches and retrieval selections.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "This distinction also explains the parameter counts. A mixture-of-experts model, or MoE, activates only some expert networks for each token. The model has 552B backbone parameters plus 196B Engram parameters, where B denotes billion. Long-input prefill activates 8B parameters per token, while decode activates 16B. The 8B count measures active computation, not total parameter storage."
+            },
+            {
+              "type": "paragraph",
+              "text": "Other components support the design. Engram is conditional memory accessed according to the input. Single-Pass mHC changes how residual streams are mixed to make computation easier to fuse. DSpark accelerates generation by proposing candidate outputs for the main model to verify. These are parts of the overall system; the cache reductions are the focus of the next steps."
+            }
+          ],
+          "zh": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "先分清：读输入、写输出、存历史"
+            },
+            {
+              "type": "paragraph",
+              "text": "Prefill（预填充）是模型处理新输入并建立缓存的阶段；decode（解码）则逐 token 生成输出。工具调用经常送回大段内容，让智能体成为输入负担很重的应用。稀疏注意力只访问选中的历史位置，能减少计算，但留下的缓存依然需要容量和传输带宽。"
+            },
+            {
+              "type": "paragraph",
+              "text": "报告区分两类存储口径：运行时的全局 KV 常驻 HBM（加速器高带宽内存），供模型访问长距离历史；用于跨请求复用输入前缀的持久化 KV 放在 SSD（固态硬盘）或主机内存。890 字节统计的是全局 KV，不包括模型权重、激活值以及每层的局部状态，也不能直接换算成完整部署成本。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 69.836,
+        "end": 104.936,
+        "slides": [
+          3
+        ]
+      },
+      "clip": "assets/media/clips/motivation.mp4",
+      "source_clip_seconds": 35.1,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 36.0,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 3,
+          "global_start": 69.836,
+          "global_end": 104.936,
+          "relative_start": 0.0,
+          "relative_end": 35.1,
+          "clip": "assets/media/slide_clips/slide-03.mp4"
+        }
+      ]
+    },
+    {
+      "id": "contribution",
+      "label": "Contribution",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='contribution']"
+      },
+      "slide_indices": [
+        4
+      ],
+      "slides": [
+        {
+          "slide_index": 4,
+          "slide_id": "contribution-system",
+          "target": "#slide-4"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Share the cache, keep the option to look elsewhere"
+            },
+            {
+              "type": "paragraph",
+              "text": "Compressed Sparse Attention 2, or CSA2, separates stored information from positions selected for reading. A Full layer creates global KV and selects positions. A Reindex layer shares that KV but scores and selects positions again. A Reuse layer shares both the cache and the selection. In the diagram, Top-K means the highest-scoring candidate positions; Q is the current query and K supplies keys for matching."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page10_figure4.png",
+              "caption": "Figure 3 | Paper Figure 4. Green denotes current-layer computation, yellow shared global cache, and red shared Top-K positions. Reindex permits layers to choose different content. Every mode still computes its own query and local SWA KV rather than copying an attention output.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page10_figure4.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "SWA stands for Sliding-Window Attention, which reads only a recent segment. Keeping each layer’s queries and local state means global sharing need not make every layer behave alike. The report acknowledges earlier work on sharing caches and indices across layers. Its contribution centers on combining those ideas with the encoder-decoder structure, cache precision, and deployment mechanisms."
+            },
+            {
+              "type": "paragraph",
+              "text": "A hierarchical indexer further limits repeated searches in the decoder. An initial scan of all visible history creates a pool of up to 16,384 positions; later reindexing layers choose Top-512 from that pool. The initial full-range scan remains. Main KV is stored in FP4, a four-bit floating-point representation, with quantization-aware training to adapt to reduced precision. More sensitive local SWA KV stays in FP8."
+            }
+          ],
+          "zh": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page10_figure4.png",
+              "caption": "图3｜原论文图4。绿色表示当前层计算，黄色表示复用的全局缓存，红色表示复用的 Top-K 位置。Reindex 允许不同层读取不同内容；所有模式仍计算本层查询和局部 SWA KV，并非直接复制注意力输出。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page10_figure4.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "先分清：读输入、写输出、存历史"
+            },
+            {
+              "type": "paragraph",
+              "text": "Prefill（预填充）是模型处理新输入并建立缓存的阶段；decode（解码）则逐 token 生成输出。工具调用经常送回大段内容，让智能体成为输入负担很重的应用。稀疏注意力只访问选中的历史位置，能减少计算，但留下的缓存依然需要容量和传输带宽。"
+            },
+            {
+              "type": "paragraph",
+              "text": "报告区分两类存储口径：运行时的全局 KV 常驻 HBM（加速器高带宽内存），供模型访问长距离历史；用于跨请求复用输入前缀的持久化 KV 放在 SSD（固态硬盘）或主机内存。890 字节统计的是全局 KV，不包括模型权重、激活值以及每层的局部状态，也不能直接换算成完整部署成本。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 104.936,
+        "end": 142.988,
+        "slides": [
+          4
+        ]
+      },
+      "clip": "assets/media/clips/contribution.mp4",
+      "source_clip_seconds": 38.052,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 38.952,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 4,
+          "global_start": 104.936,
+          "global_end": 142.988,
+          "relative_start": 0.0,
+          "relative_end": 38.052,
+          "clip": "assets/media/slide_clips/slide-04.mp4"
+        }
+      ]
+    },
+    {
+      "id": "method",
+      "label": "Method",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='method']"
+      },
+      "slide_indices": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "slides": [
+        {
+          "slide_index": 5,
+          "slide_id": "method-ced",
+          "target": "#slide-5"
+        },
+        {
+          "slide_index": 6,
+          "slide_id": "method-prefill",
+          "target": "#slide-6"
+        },
+        {
+          "slide_index": 7,
+          "slide_id": "method-csa2",
+          "target": "#slide-7"
+        },
+        {
+          "slide_index": 8,
+          "slide_id": "method-indexer",
+          "target": "#slide-8"
+        },
+        {
+          "slide_index": 9,
+          "slide_id": "method-precision",
+          "target": "#slide-9"
+        },
+        {
+          "slide_index": 10,
+          "slide_id": "method-replay",
+          "target": "#slide-10"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "Figure 1 | Paper Figure 1. Selected agent results appear beside global KV bytes per token. Strong benchmark performance accompanies the smaller cache; this comparison does not establish that compression itself caused the capability gains.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "What the capability results establish"
+            },
+            {
+              "type": "paragraph",
+              "text": "A stronger model with a smaller cache is not evidence that compression made it smarter. Pretraining uses 45T multimodal tokens, with T denoting trillion. Post-training combines supervised fine-tuning (SFT), reinforcement learning (RL), and on-policy distillation (OPD). The report explicitly claims no new post-training algorithm: its changes concern synthesized tasks, environments, and training scale. Final scores reflect the combined model and training recipe."
+            },
+            {
+              "type": "paragraph",
+              "text": "The selection from Paper Table 3 below covers software, terminal, and general agent tasks, including a harder benchmark to show the boundary. Resolved is the share of tasks successfully solved; Pass@1 measures single-attempt success. All columns use Max reasoning effort. DeepSWE v1.1 uses mini-SWE; Terminal-Bench uses DeepSeek Harness in Minimal mode with 1M context; Automation-Bench uses its official scaffold."
+            },
+            {
+              "type": "table",
+              "caption": "Table 1 | Selection from Paper Table 3. Scores are in %; higher is better.",
+              "headers": [
+                "Benchmark / metric",
+                "V4-Flash",
+                "V4.1-Flash",
+                "Opus-5"
+              ],
+              "rows": [
+                [
+                  "DeepSWE v1.1 / Resolved",
+                  "54.4",
+                  "74.2",
+                  "74.0"
+                ],
+                [
+                  "Terminal-Bench 2.1 / Pass@1",
+                  "82.7",
+                  "90.6",
+                  "89.1"
+                ],
+                [
+                  "Automation-Bench / Pass@1",
+                  "37.7",
+                  "54.8",
+                  "50.3"
+                ],
+                [
+                  "Terminal-Bench 4.0 / Pass@1",
+                  "7.0",
+                  "31.2",
+                  "51.8"
+                ]
+              ],
+              "note": "V4-Flash and V4.1-Flash denote DeepSeek-V4-Flash and DeepSeek-V4.1-Flash. These are comparisons reported by the authors, not independent measurements for this article."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSWE and Terminal-Bench 2.1 show substantial gains over the predecessor. Scores close to Opus-5 remain task-specific: the gap on Terminal-Bench 4.0 shows that more demanding specialist work is a different proposition. Visual capability also has limits. With tools on Chartography, the model scores 78.9% against Opus-5’s 84.0%; these visual evaluations use Claude Code and a 512K context."
+            }
+          ],
+          "zh": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "共享缓存，同时保留重新选择的机会"
+            },
+            {
+              "type": "paragraph",
+              "text": "Compressed Sparse Attention 2（CSA2，压缩稀疏注意力）把“存什么”和“访问哪里”分开。Full 层生成全局 KV 并选出要读的位置；Reindex 层复用这些 KV，却重新评分和选择位置；Reuse 层连选中的位置也一起复用。图中的 Top-K 指评分最高的一组候选位置，Q 是当前查询，K 是用于匹配的键。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page10_figure4.png",
+              "caption": "图3｜原论文图4。绿色表示当前层计算，黄色表示复用的全局缓存，红色表示复用的 Top-K 位置。Reindex 允许不同层读取不同内容；所有模式仍计算本层查询和局部 SWA KV，并非直接复制注意力输出。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page10_figure4.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "这里的 SWA 是 Sliding-Window Attention（滑动窗口注意力），只看最近一小段历史。保留各层自己的局部状态与查询，使全局共享不必意味着所有层做同一件事。报告也承认，跨层缓存和索引复用已有先例；本工作的重点在于把这些做法与编码器—解码器结构、精度和部署机制组合起来。"
+            },
+            {
+              "type": "paragraph",
+              "text": "解码器还采用分层稀疏索引：首次扫描全部可见历史，建立最多 16,384 个位置的候选池；后续需要重新索引的层只在池内选 Top-512。这样约束了后续搜索量，但第一次全范围扫描仍然存在。主 KV 再用 FP4（四位浮点）存储，并通过量化感知训练适应精度变化；较敏感的局部 SWA KV 保留 FP8。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 142.988,
+        "end": 374.012,
+        "slides": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "clip": "assets/media/clips/method.mp4",
+      "source_clip_seconds": 231.024,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 231.924,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 5,
+          "global_start": 142.988,
+          "global_end": 181.088,
+          "relative_start": 0.0,
+          "relative_end": 38.1,
+          "clip": "assets/media/slide_clips/slide-05.mp4"
+        },
+        {
+          "slide": 6,
+          "global_start": 181.088,
+          "global_end": 218.612,
+          "relative_start": 38.1,
+          "relative_end": 75.624,
+          "clip": "assets/media/slide_clips/slide-06.mp4"
+        },
+        {
+          "slide": 7,
+          "global_start": 218.612,
+          "global_end": 257.456,
+          "relative_start": 75.624,
+          "relative_end": 114.468,
+          "clip": "assets/media/slide_clips/slide-07.mp4"
+        },
+        {
+          "slide": 8,
+          "global_start": 257.456,
+          "global_end": 296.132,
+          "relative_start": 114.468,
+          "relative_end": 153.144,
+          "clip": "assets/media/slide_clips/slide-08.mp4"
+        },
+        {
+          "slide": 9,
+          "global_start": 296.132,
+          "global_end": 335.096,
+          "relative_start": 153.144,
+          "relative_end": 192.108,
+          "clip": "assets/media/slide_clips/slide-09.mp4"
+        },
+        {
+          "slide": 10,
+          "global_start": 335.096,
+          "global_end": 374.012,
+          "relative_start": 192.108,
+          "relative_end": 231.024,
+          "clip": "assets/media/slide_clips/slide-10.mp4"
+        }
+      ]
+    },
+    {
+      "id": "dataset-benchmark",
+      "label": "Dataset / Benchmark",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='dataset-benchmark']"
+      },
+      "slide_indices": [
+        11
+      ],
+      "slides": [
+        {
+          "slide_index": 11,
+          "slide_id": "benchmark-context",
+          "target": "#slide-11"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "paragraph",
+              "text": "An agent working through a codebase spends much of its time reading: files, tool results, error logs, and earlier decisions. Each round adds to a growing working record. Keeping that record available can become expensive even when the model is efficient at producing its next answer."
+            },
+            {
+              "type": "paragraph",
+              "text": "Models process inputs as tokens, units representing pieces of text or visual information. A key-value cache, or KV cache, stores historical representations used by attention so they need not be recomputed for every new token. DeepSeek-AI’s technical report asks how to reduce both the work of reading inputs and the cost of retaining them for a context of up to 1M tokens."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash combines shared global caches, lower cache precision, and reconstruction of local state. The report puts its global KV footprint at 890 bytes per token, roughly 1/4 of DeepSeek-V4-Flash’s, and its persistent KV footprint at about 1/8. The opening figure puts the capability and storage claims side by side: agent benchmarks on the left, global cache size on the right."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "Figure 1 | Paper Figure 1. Selected agent results appear beside global KV bytes per token. Strong benchmark performance accompanies the smaller cache; this comparison does not establish that compression itself caused the capability gains.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "Source: DeepSeek-AI, DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression. Analysis follows the report’s evaluation settings."
+            },
+            {
+              "type": "paragraph",
+              "text": "Paper: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "Model and project resources: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            }
+          ],
+          "zh": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "能力证据：看成绩，也看训练和设置"
+            },
+            {
+              "type": "paragraph",
+              "text": "压缩后的模型更强，不等于“压缩让模型更聪明”。预训练使用 45T token 的多模态语料，T 表示万亿；后训练包括 SFT（监督微调）、RL（强化学习）与 OPD（在策略蒸馏）。报告明确说后训练没有提出新算法，主要变化是合成任务、环境和训练规模。因此，最终成绩反映的是整个模型与训练方案的联合结果。"
+            },
+            {
+              "type": "paragraph",
+              "text": "下面从原论文表3选取软件、终端和通用智能体任务，并保留较困难任务作为边界。Resolved 是成功解决任务的比例；Pass@1 衡量单次尝试的成功率。各列均为 Max 推理强度。DeepSWE v1.1 使用 mini-SWE；Terminal-Bench 使用 DeepSeek Harness 的 Minimal 模式及 1M 上下文；Automation-Bench 使用官方框架。"
+            },
+            {
+              "type": "table",
+              "caption": "表1｜原论文表3节选，分数单位为 %，越高越好。",
+              "headers": [
+                "基准 / 指标",
+                "V4-Flash",
+                "V4.1-Flash",
+                "Opus-5"
+              ],
+              "rows": [
+                [
+                  "DeepSWE v1.1 / Resolved",
+                  "54.4",
+                  "74.2",
+                  "74.0"
+                ],
+                [
+                  "Terminal-Bench 2.1 / Pass@1",
+                  "82.7",
+                  "90.6",
+                  "89.1"
+                ],
+                [
+                  "Automation-Bench / Pass@1",
+                  "37.7",
+                  "54.8",
+                  "50.3"
+                ],
+                [
+                  "Terminal-Bench 4.0 / Pass@1",
+                  "7.0",
+                  "31.2",
+                  "51.8"
+                ]
+              ],
+              "note": "V4-Flash 与 V4.1-Flash 分别指 DeepSeek-V4-Flash 与 DeepSeek-V4.1-Flash。表格是报告内的评测比较，并非本文独立复测。"
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSWE 与 Terminal-Bench 2.1 显示了相对前代的明显提升；与 Opus-5 接近的成绩仍应按具体任务理解。Terminal-Bench 4.0 上的差距说明，专业知识要求更高的任务并未达到同样水平。视觉能力也有边界：Chartography 的工具辅助评测中，本模型为 78.9%，Opus-5 为 84.0%；这些视觉任务使用 Claude Code 和 512K 上下文。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 374.012,
+        "end": 415.016,
+        "slides": [
+          11
+        ]
+      },
+      "clip": "assets/media/clips/dataset-benchmark.mp4",
+      "source_clip_seconds": 41.004,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 41.904,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 11,
+          "global_start": 374.012,
+          "global_end": 415.016,
+          "relative_start": 0.0,
+          "relative_end": 41.004,
+          "clip": "assets/media/slide_clips/slide-11.mp4"
+        }
+      ]
+    },
+    {
+      "id": "key-result",
+      "label": "Key Result",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='key-result']"
+      },
+      "slide_indices": [
+        12,
+        13
+      ],
+      "slides": [
+        {
+          "slide_index": 12,
+          "slide_id": "result-agents",
+          "target": "#slide-12"
+        },
+        {
+          "slide_index": 13,
+          "slide_id": "result-scaling",
+          "target": "#slide-13"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "paragraph",
+              "text": "An agent working through a codebase spends much of its time reading: files, tool results, error logs, and earlier decisions. Each round adds to a growing working record. Keeping that record available can become expensive even when the model is efficient at producing its next answer."
+            },
+            {
+              "type": "paragraph",
+              "text": "Models process inputs as tokens, units representing pieces of text or visual information. A key-value cache, or KV cache, stores historical representations used by attention so they need not be recomputed for every new token. DeepSeek-AI’s technical report asks how to reduce both the work of reading inputs and the cost of retaining them for a context of up to 1M tokens."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash combines shared global caches, lower cache precision, and reconstruction of local state. The report puts its global KV footprint at 890 bytes per token, roughly 1/4 of DeepSeek-V4-Flash’s, and its persistent KV footprint at about 1/8. The opening figure puts the capability and storage claims side by side: agent benchmarks on the left, global cache size on the right."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "Figure 1 | Paper Figure 1. Selected agent results appear beside global KV bytes per token. Strong benchmark performance accompanies the smaller cache; this comparison does not establish that compression itself caused the capability gains.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "Source: DeepSeek-AI, DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression. Analysis follows the report’s evaluation settings."
+            },
+            {
+              "type": "paragraph",
+              "text": "Paper: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "Model and project resources: https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Rebuild short-lived state when needed"
+            },
+            {
+              "type": "paragraph",
+              "text": "Sharing and FP4 explain the main reduction in global KV. SWA Bounded Replay helps persistent storage go further. Exact reconstruction of local state across layers can require replaying the layer count multiplied by the window length in tokens. Bounded replay uses just the most recent window, 128 tokens, trading a small recomputation for less stored state."
+            },
+            {
+              "type": "paragraph",
+              "text": "The recovery is approximate. When encoder local state is missing, replay rebuilds it using the existing global KV. The decoder also replays only the final window at each prefill. Long-term persistent storage no longer holds SWA KV, although a host-memory pool can briefly retain encoder local state for active sessions. The 1/8 ratio does not mean local caches disappear from the system."
+            },
+            {
+              "type": "paragraph",
+              "text": "The authors report little effect on response quality but explicitly state that reconstructed states are not mathematically identical to a full computation. Paper Figure 2 shows the computational scaling: expanding context from 4K to 1M, a 256× increase in length, raises weighted single-token decode FLOPs, or floating-point operations, by about 25%. These are operation counts, not measured latencies."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page5_figure2.png",
+              "caption": "Figure 4 | Paper Figure 2. Context length is plotted against weighted single-token decode FLOPs. BF16, FP8, and FP4 operations receive weights of 1, 0.5, and 0.25. The curve supports better computational scaling at long contexts, without establishing an equivalent reduction in response time or price.",
+              "width_inches": 5.8,
+              "src": "assets/blog/figures/blog_page5_figure2.png"
+            }
+          ],
+          "zh": [
+            {
+              "type": "paragraph",
+              "text": "让智能体读完一份代码库、调用工具，再接着处理返回结果，难点不只在于模型能否给出答案。每轮交互都可能带来更长的输入，而过去读过的内容还要保存、搬运和重新接入计算。任务持续越久，这本不断增厚的“工作笔记”就越昂贵。"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型把输入拆成 token，也就是文本片段或视觉表示单元；KV cache（键值缓存）保存注意力计算所需的历史表示，避免生成新内容时重复计算。DeepSeek-AI 的技术报告把问题落在这份缓存上：支持 1M token 上下文时，怎样同时减少读取输入的计算量与保存历史的开销？"
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSeek-V4.1-Flash 的回答是：跨层共享全局信息、降低缓存精度，再按需重建局部状态。报告给出的全局 KV 缓存为每 token 890 字节，约为 DeepSeek-V4-Flash 的 1/4；持久化 KV 缓存约为其 1/8。先看原论文图1：左侧是智能体评测，右侧是全局缓存，两者分别衡量能力和存储。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "来源：DeepSeek-AI，DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression。以下分析以该技术报告及其所述评测设置为依据。"
+            },
+            {
+              "type": "paragraph",
+              "text": "论文：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf"
+            },
+            {
+              "type": "paragraph",
+              "text": "模型与项目资源：https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "推理更久，会得到什么"
+            },
+            {
+              "type": "paragraph",
+              "text": "Reasoning effort（推理强度）控制模型为探索与验证投入多少生成内容。原论文图9的实线是成功率、虚线是输出 token 数，读图时需要同时看两者。从强度 25 提高到 100，DeepSWE v1.1 从 66.0% 升到 74.2%，Terminal-Bench 2.1 从 82.4% 升到 90.6%；报告将输出量的增长概括为约 2.5×。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page35_figure9.png",
+              "caption": "图5｜原论文图9。左图汇总推理密集型基准，中图为 mini-SWE 下的 DeepSWE v1.1，右图为 DeepSeek Harness（Minimal）下的 Terminal-Bench v2.1。提高推理强度总体增加输出和端点成绩，但中间档位存在波动，不能保证每次加预算都更准。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page35_figure9.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "对部署者而言，这提供了可调的成本—质量关系，而不是无条件开启最高档的理由。完整系统还包括 scaffold（智能体运行框架）：系统提示、工具定义、上下文管理和轮次规则都会影响结果。模型在不同框架下的表现和推理强度的收益可能不同，实际应用需要用自己的任务与框架验证。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 415.016,
+        "end": 489.776,
+        "slides": [
+          12,
+          13
+        ]
+      },
+      "clip": "assets/media/clips/key-result.mp4",
+      "source_clip_seconds": 74.76,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 75.66,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 12,
+          "global_start": 415.016,
+          "global_end": 451.148,
+          "relative_start": 0.0,
+          "relative_end": 36.132,
+          "clip": "assets/media/slide_clips/slide-12.mp4"
+        },
+        {
+          "slide": 13,
+          "global_start": 451.148,
+          "global_end": 489.776,
+          "relative_start": 36.132,
+          "relative_end": 74.76,
+          "clip": "assets/media/slide_clips/slide-13.mp4"
+        }
+      ]
+    },
+    {
+      "id": "ablation-study",
+      "label": "Ablation Study",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='ablation-study']"
+      },
+      "slide_indices": [
+        14
+      ],
+      "slides": [
+        {
+          "slide_index": 14,
+          "slide_id": "ablation-effort",
+          "target": "#slide-14"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Rebuild short-lived state when needed"
+            },
+            {
+              "type": "paragraph",
+              "text": "Sharing and FP4 explain the main reduction in global KV. SWA Bounded Replay helps persistent storage go further. Exact reconstruction of local state across layers can require replaying the layer count multiplied by the window length in tokens. Bounded replay uses just the most recent window, 128 tokens, trading a small recomputation for less stored state."
+            },
+            {
+              "type": "paragraph",
+              "text": "The recovery is approximate. When encoder local state is missing, replay rebuilds it using the existing global KV. The decoder also replays only the final window at each prefill. Long-term persistent storage no longer holds SWA KV, although a host-memory pool can briefly retain encoder local state for active sessions. The 1/8 ratio does not mean local caches disappear from the system."
+            },
+            {
+              "type": "paragraph",
+              "text": "The authors report little effect on response quality but explicitly state that reconstructed states are not mathematically identical to a full computation. Paper Figure 2 shows the computational scaling: expanding context from 4K to 1M, a 256× increase in length, raises weighted single-token decode FLOPs, or floating-point operations, by about 25%. These are operation counts, not measured latencies."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page5_figure2.png",
+              "caption": "Figure 4 | Paper Figure 2. Context length is plotted against weighted single-token decode FLOPs. BF16, FP8, and FP4 operations receive weights of 1, 0.5, and 0.25. The curve supports better computational scaling at long contexts, without establishing an equivalent reduction in response time or price.",
+              "width_inches": 5.8,
+              "src": "assets/blog/figures/blog_page5_figure2.png"
+            }
+          ],
+          "zh": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "实践意义与尚未封闭的边界"
+            },
+            {
+              "type": "paragraph",
+              "text": "最有启发性的设计原则，是让全局历史尽量共享、局部状态按需恢复，并把结构、精度和服务策略一起考虑。它为长输入、多轮工具交互提供了明确的节省路径；模型同时接收文本与图像，也使这一思路覆盖视觉智能体。缓存比例则只是部署评估的一部分，还要结合硬件、吞吐、重算和数据搬运。"
+            },
+            {
+              "type": "paragraph",
+              "text": "证据的边界同样明确：报告没有在相关章节给出能够逐项归因的完整数值消融；稀疏选择可能遗漏关键信息，近似重放也可能在缓存恢复边界产生退化，作者将这些列为后续压力测试方向。评测中仍发现模型利用环境漏洞的行为。较强的公开基准成绩支持继续部署验证，但不足以证明任意长任务的可靠性。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 489.776,
+        "end": 529.484,
+        "slides": [
+          14
+        ]
+      },
+      "clip": "assets/media/clips/ablation-study.mp4",
+      "source_clip_seconds": 39.708,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 40.608,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 14,
+          "global_start": 489.776,
+          "global_end": 529.484,
+          "relative_start": 0.0,
+          "relative_end": 39.708,
+          "clip": "assets/media/slide_clips/slide-14.mp4"
+        }
+      ]
+    },
+    {
+      "id": "headline-numbers",
+      "label": "Headline Numbers",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='headline-numbers']"
+      },
+      "slide_indices": [
+        15
+      ],
+      "slides": [
+        {
+          "slide_index": 15,
+          "slide_id": "numbers-scope",
+          "target": "#slide-15"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page35_figure9.png",
+              "caption": "Figure 5 | Paper Figure 9. The panels show reasoning benchmarks, DeepSWE v1.1 with mini-SWE, and Terminal-Bench v2.1 with DeepSeek Harness (Minimal). Higher effort increases output and endpoint scores overall, but intermediate settings fluctuate. More budget is not guaranteed to improve each measurement.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page35_figure9.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "What the capability results establish"
+            },
+            {
+              "type": "paragraph",
+              "text": "A stronger model with a smaller cache is not evidence that compression made it smarter. Pretraining uses 45T multimodal tokens, with T denoting trillion. Post-training combines supervised fine-tuning (SFT), reinforcement learning (RL), and on-policy distillation (OPD). The report explicitly claims no new post-training algorithm: its changes concern synthesized tasks, environments, and training scale. Final scores reflect the combined model and training recipe."
+            },
+            {
+              "type": "paragraph",
+              "text": "The selection from Paper Table 3 below covers software, terminal, and general agent tasks, including a harder benchmark to show the boundary. Resolved is the share of tasks successfully solved; Pass@1 measures single-attempt success. All columns use Max reasoning effort. DeepSWE v1.1 uses mini-SWE; Terminal-Bench uses DeepSeek Harness in Minimal mode with 1M context; Automation-Bench uses its official scaffold."
+            },
+            {
+              "type": "table",
+              "caption": "Table 1 | Selection from Paper Table 3. Scores are in %; higher is better.",
+              "headers": [
+                "Benchmark / metric",
+                "V4-Flash",
+                "V4.1-Flash",
+                "Opus-5"
+              ],
+              "rows": [
+                [
+                  "DeepSWE v1.1 / Resolved",
+                  "54.4",
+                  "74.2",
+                  "74.0"
+                ],
+                [
+                  "Terminal-Bench 2.1 / Pass@1",
+                  "82.7",
+                  "90.6",
+                  "89.1"
+                ],
+                [
+                  "Automation-Bench / Pass@1",
+                  "37.7",
+                  "54.8",
+                  "50.3"
+                ],
+                [
+                  "Terminal-Bench 4.0 / Pass@1",
+                  "7.0",
+                  "31.2",
+                  "51.8"
+                ]
+              ],
+              "note": "V4-Flash and V4.1-Flash denote DeepSeek-V4-Flash and DeepSeek-V4.1-Flash. These are comparisons reported by the authors, not independent measurements for this article."
+            },
+            {
+              "type": "paragraph",
+              "text": "DeepSWE and Terminal-Bench 2.1 show substantial gains over the predecessor. Scores close to Opus-5 remain task-specific: the gap on Terminal-Bench 4.0 shows that more demanding specialist work is a different proposition. Visual capability also has limits. With tools on Chartography, the model scores 78.9% against Opus-5’s 84.0%; these visual evaluations use Claude Code and a 512K context."
+            }
+          ],
+          "zh": [
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page1_figure1.png",
+              "caption": "图1｜原论文图1。左图比较若干智能体基准，右图给出每 token 的全局 KV 字节数。更小的缓存与较强的基准成绩同时出现，但这不是压缩单项带来能力提升的因果证据。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page1_figure1.png"
+            },
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "实践意义与尚未封闭的边界"
+            },
+            {
+              "type": "paragraph",
+              "text": "最有启发性的设计原则，是让全局历史尽量共享、局部状态按需恢复，并把结构、精度和服务策略一起考虑。它为长输入、多轮工具交互提供了明确的节省路径；模型同时接收文本与图像，也使这一思路覆盖视觉智能体。缓存比例则只是部署评估的一部分，还要结合硬件、吞吐、重算和数据搬运。"
+            },
+            {
+              "type": "paragraph",
+              "text": "证据的边界同样明确：报告没有在相关章节给出能够逐项归因的完整数值消融；稀疏选择可能遗漏关键信息，近似重放也可能在缓存恢复边界产生退化，作者将这些列为后续压力测试方向。评测中仍发现模型利用环境漏洞的行为。较强的公开基准成绩支持继续部署验证，但不足以证明任意长任务的可靠性。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 529.484,
+        "end": 567.656,
+        "slides": [
+          15
+        ]
+      },
+      "clip": "assets/media/clips/headline-numbers.mp4",
+      "source_clip_seconds": 38.172,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 39.072,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 15,
+          "global_start": 529.484,
+          "global_end": 567.656,
+          "relative_start": 0.0,
+          "relative_end": 38.172,
+          "clip": "assets/media/slide_clips/slide-15.mp4"
+        }
+      ]
+    },
+    {
+      "id": "takeaway",
+      "label": "Takeaway",
+      "poster": {
+        "artifact": "assets/poster/poster.html",
+        "selector": "[data-section='takeaway']"
+      },
+      "slide_indices": [
+        16
+      ],
+      "slides": [
+        {
+          "slide_index": 16,
+          "slide_id": "takeaway-deployment",
+          "target": "#slide-16"
+        }
+      ],
+      "blog": {
+        "blocks": {
+          "en": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "Let the encoder handle most of the input"
+            },
+            {
+              "type": "paragraph",
+              "text": "The Causal Encoder-Decoder, or CED, divides a 40-layer network into an encoder and decoder with 20 layers each. Causal means that a position cannot read future input. Global decoder keys and values are projected from the encoder’s final hidden representations. Most tokens in a long prompt can therefore supply the decoder’s global cache without passing through the full decoder."
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "Figure 2 | Paper Figure 3. Follow the connection from encoder to decoder to see how CED supplies global context. Visual and text inputs enter below; individual layers retain local sliding-window state. CSA2 adds sharing of caches and retrieval selections.",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "This distinction also explains the parameter counts. A mixture-of-experts model, or MoE, activates only some expert networks for each token. The model has 552B backbone parameters plus 196B Engram parameters, where B denotes billion. Long-input prefill activates 8B parameters per token, while decode activates 16B. The 8B count measures active computation, not total parameter storage."
+            },
+            {
+              "type": "paragraph",
+              "text": "Other components support the design. Engram is conditional memory accessed according to the input. Single-Pass mHC changes how residual streams are mixed to make computation easier to fuse. DSpark accelerates generation by proposing candidate outputs for the main model to verify. These are parts of the overall system; the cache reductions are the focus of the next steps."
+            }
+          ],
+          "zh": [
+            {
+              "type": "heading",
+              "level": 1,
+              "text": "把大部分输入计算留在编码器"
+            },
+            {
+              "type": "paragraph",
+              "text": "Causal Encoder-Decoder（CED，因果编码器—解码器）把 40 层网络分成各 20 层的编码器和解码器；“因果”表示当前位置不读取未来内容。解码器的全局 KV 由编码器最后一层的隐藏表示投影得到。因此，处理长输入时，大多数 token 不必再经过完整解码器，就能备好全局缓存。"
+            },
+            {
+              "type": "figure",
+              "path": "assets/blog/figures/blog_page7_figure3.png",
+              "caption": "图2｜原论文图3。沿左侧编码器到右侧解码器的连线，可看到 CED 如何提供全局上下文。底部视觉输入与文本共同进入模型；局部滑动窗口仍由各层保留。CSA2 模块负责进一步共享缓存与检索结果。",
+              "width_inches": 6.4,
+              "src": "assets/blog/figures/blog_page7_figure3.png"
+            },
+            {
+              "type": "paragraph",
+              "text": "这也解释了它的参数口径。MoE（混合专家）只为每个 token 激活一部分专家网络。模型有 552B 主干参数，另有 196B Engram 参数；B 表示十亿。长输入的 prefill 每 token 激活 8B，decode 激活 16B。8B 描述活跃计算规模，不能据此把它当成只需存储 8B 参数的小模型。"
+            },
+            {
+              "type": "paragraph",
+              "text": "图中还有配套设计：Engram 是按输入选择性读取的条件记忆模块；Single-Pass mHC 改写残差流的混合方式，便于融合计算；DSpark 先提出一组候选输出，再由主模型验证，以加速生成。这些组件共同参与系统优化，本文接下来聚焦缓存减少的主线。"
+            }
+          ]
+        },
+        "meta": {
+          "en": {
+            "title": "DeepSeek-V4.1-Flash: Making Long Context Less Expensive",
+            "subtitle": "Shared global history, reconstructed local state, and the evidence behind the savings"
+          },
+          "zh": {
+            "title": "DeepSeek-V4.1-Flash：长任务的缓存账单，怎样降下来",
+            "subtitle": "共享全局历史，按需重建局部状态；读懂效率、能力与边界"
+          }
+        }
+      },
+      "segment": {
+        "start": 567.656,
+        "end": 608.516,
+        "slides": [
+          16
+        ]
+      },
+      "clip": "assets/media/clips/takeaway.mp4",
+      "source_clip_seconds": 40.86,
+      "natural_tail_seconds": 0.9,
+      "clip_seconds": 41.76,
+      "clip_strategy": "complete_slide_concat_with_freeze_tail",
+      "slide_segments": [
+        {
+          "slide": 16,
+          "global_start": 567.656,
+          "global_end": 608.516,
+          "relative_start": 0.0,
+          "relative_end": 40.86,
+          "clip": "assets/media/slide_clips/slide-16.mp4"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Section videos are composed from complete timeline slide clips with a short silent freeze tail; timestamps come from paper2video timeline.json."
+  ]
+}
